@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
 {
-    protected $fillable = ['name', 'shedule', 'start_date', 'end_date'];
+    protected $fillable = ['name', 'schedule', 'start_date', 'end_date'];
 
     /**
      * Get students belongs to course
@@ -14,6 +14,6 @@ class Course extends Model
      */
     public function students()
     {
-        return $this->belongsToMany('App\Student');
+        return $this->belongsToMany('App\Student')->withTimestamps();
     }
 }
