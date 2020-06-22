@@ -13,12 +13,12 @@ class CreateCoursesStudentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('courses_students', function (Blueprint $table) {
-            $table->id();
+        Schema::create('course_student', function (Blueprint $table) {
             $table->foreignId('course_id');
             $table->foreign('course_id')->references('id')->on('courses');
             $table->foreignId('student_id');
             $table->foreign('student_id')->references('id')->on('students');
+            $table->primary(['course_id', 'student_id']);
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateCoursesStudentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('courses_students');
+        Schema::dropIfExists('course_student');
     }
 }
