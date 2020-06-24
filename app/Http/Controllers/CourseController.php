@@ -16,7 +16,7 @@ class CourseController extends Controller
      */
     public function index()
     {
-        return Course::withCount('students')->get();
+        return Course::withCount('students')->orderBy('created_at', 'desc')->get();
     }
 
     /**
@@ -68,7 +68,7 @@ class CourseController extends Controller
             return response()->json($course, 200);
         } catch (\Throwable $e) {
             \Log::error($e->getMessage());
-            return false;
+            return response()->json(null, 400);
         }
     }
 

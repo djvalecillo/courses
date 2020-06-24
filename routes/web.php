@@ -19,8 +19,22 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('/cursos', function () {
+    return view('courses.index');
+});
+
+Route::get('/cursos/{id}', function () {
+    return view('courses.show');
+});
+
+Route::get('/estudiantes', function () {
+    return view('students.index');
+});
+
 Route::get('/home', 'HomeController@index')->name('home');
+
 Route::resource('/students', 'StudentController')->middleware('auth');
+
 Route::post('/courses/suscribe/{id}', 'CourseController@suscribe')
     ->name('courses.suscribe')
     ->middleware('auth');
