@@ -41,4 +41,5 @@ Route::post('/courses/suscribe/{id}', 'CourseController@suscribe')
 Route::post('/courses/unsuscribe/{id}', 'CourseController@unsuscribe')
     ->name('courses.unsuscribe')
     ->middleware('auth');
+Route::get('/courses/stats', 'CourseController@stats')->middleware('auth');
 Route::resource('/courses', 'CourseController')->middleware('auth');

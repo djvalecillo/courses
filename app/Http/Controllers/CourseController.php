@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CourseRequest;
 use App\Http\Requests\SuscribeRequest;
 use App\Course;
-
+use Carbon\Carbon;
 class CourseController extends Controller
 {
     /**
@@ -124,5 +124,28 @@ class CourseController extends Controller
         $course->delete();
 
         return response()->json(null, 204);
+    }
+
+    /**
+     * Get the three courses with more students in the last six months
+     *
+     * @return void
+     */
+    public function stats()
+    {
+        $current_date = Carbon::now()->format('Y-m-d');
+        $date = Carbon::parse($current_date)->subMonths(6)->format('Y-m-d');
+
+        $result = Course::select([
+                'courses.id',
+                'courses.name',
+                \DB::raw('(SELECT COUNT(*) FROM course_student WHERE course_id = courses.id) as total')
+            ])
+            ->whereBetween('end_date', [$date, $current_date])
+            ->orderBy('total', 'desc')
+            ->limit(3)
+            ->get();
+
+        return $result;
     }
 }
