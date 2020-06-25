@@ -23,12 +23,15 @@ Route::get('/cursos', function () {
     return view('courses.index');
 });
 
-Route::get('/cursos/{id}', function () {
-    return view('courses.show');
+Route::get('/cursos/{id}', function ($id) {
+    return view('courses.show')->with(['courseId' => $id]);
 });
 
 Route::get('/estudiantes', function () {
     return view('students.index');
+});
+Route::get('/estudiantes/{id}', function ($id) {
+    return view('students.show')->with(['studentId' => $id]);
 });
 
 Route::get('/home', 'HomeController@index')->name('home');

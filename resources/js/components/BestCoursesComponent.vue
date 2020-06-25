@@ -1,12 +1,20 @@
 <template>
-    <div class="card-deck">
-        <div class="card text-white bg-primary mb-3 col-md-4" v-for="course in courses" :key="course.id">
+    <div class="row">
+        <div class="col-xl-4 col-md-4 mb-4" v-for="course in courses" :key="course.id">
+            <div class="card border-left-primary shadow h-100 py-2">
             <div class="card-body">
-                <h5 class="card-title">{{ course.name }}</h5>
-                <span class="badge badge-secondary"> <h2>{{ course.total }}</h2> </span> estudiantes
-                <p class="card-text">
-                    Some quick example text to build.
-                </p>
+                <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1"> 
+                        <a v-bind:href="'/cursos/' + course.id"> {{ course.name }}  </a>
+                    </div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ course.total }}</div>
+                </div>
+                <div class="col-auto">
+                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                </div>
+                </div>
+            </div>
             </div>
         </div>
     </div>

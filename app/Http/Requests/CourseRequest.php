@@ -25,7 +25,7 @@ class CourseRequest extends FormRequest
     {
         return [
             'name' => 'required|max:64',
-            'schedule' => 'required|date_format:H:i',
+            'schedule' => 'required',
             'start_date' => 'required|date',
             'end_date' => 'required|date',
         ];

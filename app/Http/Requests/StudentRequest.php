@@ -26,7 +26,7 @@ class StudentRequest extends FormRequest
         return [
             'firstname' => 'required',
             'lastname' => 'required',
-            'email' => 'required|unique:students, email',
+            'email' => 'required',
             'birthdate' => 'required|date',
         ];
     }
@@ -42,7 +42,6 @@ class StudentRequest extends FormRequest
             'firstname.required'    => 'El campo nombre es requerido',
             'lastname.required'     => 'El campo apellido es requerido',
             'email.required'        => 'El campo correo electronico es requerido',
-            'email.unique'          => 'La direccion de correo electronico ya existe',
         ];
     }
 }

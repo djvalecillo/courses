@@ -15,7 +15,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        return Student::withCount('courses')->get();
+        return Student::withCount('courses')->orderBy('created_at', 'desc')->get();
     }
 
     /**

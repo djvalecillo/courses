@@ -3,7 +3,7 @@
         <div class="card">
             <div class="card-header">
                 <h1 class="page-header">
-                    Listado de Cursos
+                    Listado de Estudiantes
                     <button type="button" class="btn btn-primary float-right" v-on:click.prevent="showModal(false)">+ Nuevo</button>
                 </h1>
             </div>
@@ -13,25 +13,23 @@
                         <tr>
                         <th scope="col">#</th>
                         <th scope="col">Nombre</th>
-                        <th scope="col">Estudiantes</th>
-                        <th scope="col">Horario</th>
-                        <th scope="col">Inicio</th>
-                        <th scope="col">Fin</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">F.Nacimiento</th>
+                        <th scope="col">Cursos suscritos</th>
                         <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(course, i) in courses" :key="course.id">
+                        <tr v-for="(student, i) in students" :key="student.id">
                             <td>{{ i + 1 }}</td>
-                            <td><a v-bind:href="'/cursos/' + course.id" >{{ course.name }}</a></td>
-                            <td><span class="badge badge-secondary">{{ course.students_count || 0 }}</span></td>
-                            <td>{{ course.schedule }}</td>
-                            <td>{{ course.start_date }}</td>
-                            <td>{{ course.end_date }}</td>
+                            <td> <a v-bind:href="'/estudiantes/' + student.id"> {{ `${student.firstname} ${student.lastname}` }} </a></td>
+                            <td>{{ student.email }}</td>
+                            <td>{{ student.birthdate }}</td>
+                            <td><span class="badge badge-secondary">{{ student.courses_count || 0 }}</span></td>
                             <td width="15%">
-                                <a v-bind:href="'/cursos/' + course.id" title="Ver Informacion" class="btn btn-light btn-sm"><i class="fas fa-search-plus"></i></a>
-                                <a href="#" v-on:click.prevent="showModal(true, course)" title="Editar" class="btn btn-info btn-sm"><i class="far fa-edit"></i></a>
-                                <a href="#" v-on:click.prevent="deleteCourse(course, i)" title="Eliminar" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></a>
+                                <a v-bind:href="'/estudiantes/' + student.id" title="Ver Informacion" class="btn btn-light btn-sm"><i class="fas fa-search-plus"></i></a>
+                                <a href="#" v-on:click.prevent="showModal(true, student)" title="Editar" class="btn btn-info btn-sm"><i class="far fa-edit"></i></a>
+                                <a href="#" v-on:click.prevent="deleteStudent(student, i)" title="Eliminar" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></a>
                             </td>
                         </tr>
                     </tbody>
@@ -41,33 +39,33 @@
 
 
         <!-- Modal -->
-        <div class="modal fade" id="modalCourse" tabindex="-1" role="dialog" aria-labelledby="CreateCourseModal" aria-hidden="true">
+        <div class="modal fade" id="modalStudent" tabindex="-1" role="dialog" aria-labelledby="CreateStudentModal" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">{{ this.editMode ? 'Editar' : 'Nuevo' }} Curso</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">{{ this.editMode ? 'Editar' : 'Nuevo' }} Estudiante</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form v-on:submit.prevent="update(course)" v-if="editMode">
+                    <form v-on:submit.prevent="update(student)" v-if="editMode">
                         <div class="modal-body">
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label for="name">Nombre</label>
-                                        <input type="text" v-model="course.name" class="form-control" id="name" required>
+                                        <label for="firstname">Nombre</label>
+                                        <input type="text" v-model="student.firstname" class="form-control" id="firstname" required>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label for="schedule">Horario</label>
-                                        <input type="time" v-model="course.schedule" class="form-control" id="schedule">
+                                        <label for="lastname">Apellido</label>
+                                        <input type="text" v-model="student.lastname" class="form-control" id="lastname" required>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label for="start_date">Fecha de Inicio</label>
-                                        <input type="date" v-model="course.start_date" class="form-control" id="start_date" required>
+                                        <label for="email">Email</label>
+                                        <input type="email" v-model="student.email" class="form-control" id="email" required>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label for="end_date">Fecha de Cierre</label>
-                                        <input type="date" v-model="course.end_date" class="form-control" id="end_date" required>
+                                        <label for="birthdate">Fecha de Nacimiento</label>
+                                        <input type="date" v-model="student.birthdate" class="form-control" id="birthdate">
                                     </div>
                                 </div>
                         </div>
@@ -80,20 +78,20 @@
                         <div class="modal-body">
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label for="name">Nombre</label>
-                                        <input type="text" v-model="course.name" class="form-control" id="name" placeholder="Nombre" required>
+                                        <label for="firstname">Nombre</label>
+                                        <input type="text" v-model="student.firstname" class="form-control" id="firstname" required>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label for="schedule">Horario</label>
-                                        <input type="time" v-model="course.schedule" class="form-control" id="schedule">
+                                        <label for="lastname">Apellido</label>
+                                        <input type="text" v-model="student.lastname" class="form-control" id="lastname" required>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label for="start_date">Fecha de Inicio</label>
-                                        <input type="date" v-model="course.start_date" class="form-control" id="start_date" required>
+                                        <label for="email">Email</label>
+                                        <input type="email" v-model="student.email" class="form-control" id="email" required>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label for="end_date">Fecha de Cierre</label>
-                                        <input type="date" v-model="course.end_date" class="form-control" id="end_date" required>
+                                        <label for="birthdate">Fecha de Nacimiento</label>
+                                        <input type="date" v-model="student.birthdate" class="form-control" id="birthdate">
                                     </div>
                                 </div>
                         </div>
@@ -113,18 +111,18 @@ export default {
     props: ['alert'],
     data () {
         return {
-            courses: [],
+            students: [],
             editMode: false,
-            course: {
-                name: '',
-                schedule: '',
-                start_date: '',
-                end_date: ''
+            student: {
+                firstname: '',
+                lastname: '',
+                email: '',
+                birthdate: ''
             }
         }
     },
     created () {
-        this.courses = this.getCourses();
+        this.students = this.getStudents();
     },
     watch: {
         editMode(newVvalue, oldValue) {
@@ -133,35 +131,35 @@ export default {
         }
     },
     methods: {
-        getCourses () {
-            const url = '/courses';
+        getStudents () {
+            const url = '/students';
             axios.get(url)
             .then(response => {
-                this.courses = response.data;
+                this.students = response.data;
             });
         },
         create() {
-            const newCourse = this.course;
+            const newStudent = this.student;
 
-            axios.post('/courses', newCourse)
+            axios.post('/students', newStudent)
             .then((response) => {
-                this.courses.unshift(response.data);
-                this.alert('Nuevo curso creado con exito.', 'success');
+                this.students.unshift(response.data);
+                this.alert('Nuevo estudiante creado con exito.', 'success');
             })
             .catch(err => {
                 console.log(err);
-                this.alert('Fallo la creacion de Nuevo curso.', 'error');
+                this.alert('Fallo la creacion de Nuevo estudiante.', 'error');
             });
             this.editMode = false;
             this.closeModal();
         },
-        update(course) {
-            const data = {name: course.name, schedule: course.schedule, start_date: course.start_date, end_date: course.end_date};
+        update(student) {
+            const data = {firstname: student.firstname, lastname: student.lastname, email: student.email, birthdate: student.birthdate};
 
-            axios.put(`/courses/${course.id}`, data)
+            axios.put(`/students/${student.id}`, data)
             .then(response => {
-                this.getCourses();
-                this.alert('El curso ha sido actualizado.', 'success');
+                this.getStudents();
+                this.alert('El estudiante ha sido actualizado.', 'success');
             })
             .catch(err => {
                 console.log(err);
@@ -170,10 +168,10 @@ export default {
             this.editMode = false;
             this.closeModal();
         },
-        deleteCourse (course, i) {
-            const url = '/courses/' + course.id;
+        deleteStudent (student, i) {
+            const url = '/students/' + student.id;
             swal.fire({
-                title: `Esta seguro de eleminar el curso ${course.name} ?`,
+                title: `Esta seguro de eliminar el estudiante ${student.firstname} ?`,
                 text: 'Si lo eliminas no podras recuperarlo.!',
                 icon: 'warning',
                 showCancelButton: true,
@@ -184,8 +182,8 @@ export default {
                 if (result.value) {
                     axios.delete(url)
                     .then(response => {
-                        this.courses.splice(i, 1);
-                        this.alert('El curso ha sido eliminado.', 'success');
+                        this.students.splice(i, 1);
+                        this.alert('El estudiante ha sido eliminado.', 'success');
                     })
                     .catch(err => {
                         this.alert('Ha ocurrido un error, no se pudo eliminar.', 'error');
@@ -193,30 +191,30 @@ export default {
                 }
             });
         },
-        showModal(editMode, course = {}) {
+        showModal(editMode, student = {}) {
             this.editMode = editMode;
             if(this.editMode) {
-                this.course.id = course.id;
-                this.course.name = course.name;
-                this.course.schedule = course.schedule;
-                this.course.start_date = course.start_date;
-                this.course.end_date = course.end_date;
+                this.student.id = student.id;
+                this.student.firstname = student.firstname;
+                this.student.lastname = student.lastname;
+                this.student.email = student.email;
+                this.student.birthdate = student.birthdate;
             }
-            $('#modalCourse').modal('show');
+            $('#modalStudent').modal('show');
         },
         btnCancel() {
             this.editMode = false;
             this.closeModal();
         },
         clearModel() {
-            this.course.id = '';
-            this.course.name = '';
-            this.course.schedule = '';
-            this.course.start_date = '';
-            this.course.end_date = '';
+            this.student.id = '';
+            this.student.firstname = '';
+            this.student.lastname = '';
+            this.student.email = '';
+            this.student.birthdate = '';
         },
         closeModal() {
-            $('#modalCourse').modal('hide');
+            $('#modalStudent').modal('hide');
         }
     }
 }

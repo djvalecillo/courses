@@ -18,6 +18,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/sb-admin-2.css') }}" rel="stylesheet">
+    <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
